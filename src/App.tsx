@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react'
 
-function App() {
+import { CurrencyInput } from './components/CurrencyInput'
+import { rules } from './rules'
+import { formatValue } from './utils/formatValue'
+
+export function App() {
+  const [value, setValue] = useState(3.11)
+  const [roundedValue, setRoundedValue] = useState(value)
+
+  useEffect(() => {
+    const roundedValue = rules(value)
+    setRoundedValue(roundedValue)
+  }, [value])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <div>
+      <CurrencyInput value={value} onChange={setValue} />
 
-export default App;
+      <p>
+        <strong>Valor arredondado</strong>: {formatValue(roundedValue)}
+      </p>
+    </div>
+  )
+}
